@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "906463732368",
+    "project_id": "conference-app-cc4a4",
+    "storage_bucket": "conference-app-cc4a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:906463732368:android:93f33eee2be01fa44d2e15",
+        "android_client_info": {
+          "package_name": "com.mzamodev.conferenceapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "906463732368-vk0lts74k4ngvt6d163fqfll500soca0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtHqWvGRvDLmliqOMTXoVmxWetok04UOE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "906463732368-vk0lts74k4ngvt6d163fqfll500soca0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

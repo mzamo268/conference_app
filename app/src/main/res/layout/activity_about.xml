@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffff"
+    tools:context=".About">
+
+    <!--About us View-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--Top Bar-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00EAFF"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_marginEnd="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="30sp"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:background="#00000000"
+                android:textColorHint="#FFFFFF"
+                android:hint="About Us"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/txtTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:background="#00000000"
+                android:textColorHint="#FFFFFF"
+                android:hint="From MzamoDev Pty Ltd"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="bottom"
+            android:rotationX="180">
+
+            <!--Bottom navigation-->
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/bottomNav"
+                android:rotationX="180"
+                android:background="#FFFFFF"
+                app:itemTextColor="@drawable/selector"
+                app:itemIconTint="@drawable/selector"
+                app:menu="@menu/menu_nav"/>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:rotationX="180">
+
+                <!--About Layout-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!--Follow Button-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:onClick="followMe"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:background="@drawable/edit_text">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/ig_icon"
+                            android:onClick="followMe"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_marginTop="10dp"/>
+
+                        <Button
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="MzamoDev"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            android:onClick="followMe"
+                            android:textAlignment="textStart"
+                            android:textStyle="bold"
+                            android:background="#00FFFFFF"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000000"
+                        android:textSize="25sp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:textStyle="italic"
+                        android:textAlignment="center"
+                        android:text="This App is made to help South African high school learners prepare for their exams. offering mental and emotional support as well as revision throughout the exam period  "/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000000"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:textSize="25sp"
+                        android:textStyle="bold|italic"
+                        android:textAlignment="center"
+                        android:text="Developed By Mzamo Mbhele From DURBAN KZN South Africa"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="#000000"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textSize="25sp"
+                        android:textStyle="bold|italic"
+                        android:textAlignment="center"
+                        android:text="Don't forget to follow the Developer and feel free to ask any questions."/>
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="#00EAFF"
+                        android:src="@drawable/developer_logo" />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!--Progress Bar-->
+    <LinearLayout
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="#65000000"
+        android:visibility="invisible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/searchbar">
+
+            <ProgressBar
+                android:layout_width="80dp"
+                android:layout_height="80dp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Please wait..."
+            android:textColor="#ffffff"
+            android:textSize="22sp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
