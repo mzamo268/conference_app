@@ -71,9 +71,9 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:textSize="25sp"
-                        android:textStyle="bold|italic"
+                        android:textStyle="bold"
                         android:textAlignment="center"
-                        android:text="MCHUNU SS 21706862"/>
+                        android:text="Siyanda Mchunu 21718609"/>
 
                     <TextView
                         android:layout_width="match_parent"
@@ -83,9 +83,9 @@
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
                         android:textSize="25sp"
-                        android:textStyle="bold|italic"
+                        android:textStyle="bold"
                         android:textAlignment="center"
-                        android:text="MCHUNU SS 21706862"/>
+                        android:text="Nompumelelo Shezi 21929104"/>
 
 
                 </LinearLayout>
