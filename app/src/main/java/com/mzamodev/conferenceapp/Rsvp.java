@@ -66,6 +66,12 @@ public class Rsvp extends AppCompatActivity implements EventsInterface{
         qrWindow = (LinearLayout) findViewById(R.id.qrWindow);
         qrImage = (ImageView) findViewById(R.id.qrCode);
 
+        //get parsed user info
+        name = getIntent().getStringExtra("name");
+        cellphone = getIntent().getStringExtra("cellphone");
+        type = getIntent().getStringExtra("type");
+        studentNo = getIntent().getStringExtra("studentNo");
+
         //initializing bottom navigation
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
 
@@ -80,18 +86,30 @@ public class Rsvp extends AppCompatActivity implements EventsInterface{
                     case R.id.anouncements:
                         Intent open = new Intent(getApplicationContext(),Anouncement.class);
                         //open.putExtra("subject","maths");
+                        open.putExtra("name",name);
+                        open.putExtra("cellphone",cellphone);
+                        open.putExtra("studentNo",studentNo);
+                        open.putExtra("type",type);
                         open.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(open);
                         return true;
                     case R.id.aboutBtn:
                         Intent open1 = new Intent(getApplicationContext(),About.class);
                         //open1.putExtra("email",email);
+                        open1.putExtra("name",name);
+                        open1.putExtra("cellphone",cellphone);
+                        open1.putExtra("studentNo",studentNo);
+                        open1.putExtra("type",type);
                         open1.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(open1);
                         return true;
                     case R.id.homeBtn:
                         Intent open2 = new Intent(getApplicationContext(),Home.class);
                         //open1.putExtra("email",email);
+                        open2.putExtra("name",name);
+                        open2.putExtra("cellphone",cellphone);
+                        open2.putExtra("studentNo",studentNo);
+                        open2.putExtra("type",type);
                         open2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(open2);
                         return true;
@@ -111,7 +129,7 @@ public class Rsvp extends AppCompatActivity implements EventsInterface{
         DBHelper dbHelper = new DBHelper(getApplicationContext());
         dbHelper.clearAllEvents();
         //dbHelper.clearUser();
-
+        
         //firebase Stuff
         database = FirebaseDatabase.getInstance().getReference("Conference").child("rsvp");
         //reading from firebase
@@ -170,17 +188,36 @@ public class Rsvp extends AppCompatActivity implements EventsInterface{
                 String newEventCellphone = res.getString(5);
                 String newEventLocation = res.getString(6);
 
-                if(newEventCellphone.equalsIgnoreCase(cellphone)){
-                    eventsView = (RecyclerView) findViewById(R.id.eventsView);
-                    eventsView.setHasFixedSize(true);
-                    eventsView.setLayoutManager(new GridLayoutManager(this,1));
-                    Events events = new Events(newEventName,newEventDescription,newEventTime,newEventDate,newEventLocation,newEventPrice,newEventCellphone);
-                    eventList = new ArrayList<>();
-                    eventList.add(events);
-                    eventAdapter = new EventAdapter(this,eventList,this);
-                    eventsView.setAdapter(eventAdapter);
-                }else {
-                    Toast.makeText(this, "You don't have any events booked please go to home page and RSVP", Toast.LENGTH_LONG).show();
+                if(type.equalsIgnoreCase("admin")){
+
+                    if(newEventCellphone.equalsIgnoreCase(cellphone)){
+                        eventsView = (RecyclerView) findViewById(R.id.eventsView);
+                        eventsView.setHasFixedSize(true);
+                        eventsView.setLayoutManager(new GridLayoutManager(this,1));
+                        Events events = new Events(newEventName,newEventDescription,newEventTime,newEventDate,newEventLocation,newEventPrice,newEventCellphone);
+                        eventList = new ArrayList<>();
+                        eventList.add(events);
+                        eventAdapter = new EventAdapter(this,eventList,this);
+                        eventsView.setAdapter(eventAdapter);
+                    }else {
+                        Toast.makeText(this, "You don't have any events posted. post an event in home Tab", Toast.LENGTH_LONG).show();
+                    }
+
+                }else if(type.equalsIgnoreCase("user")){
+
+                    if(newEventCellphone.equalsIgnoreCase(cellphone)){
+                        eventsView = (RecyclerView) findViewById(R.id.eventsView);
+                        eventsView.setHasFixedSize(true);
+                        eventsView.setLayoutManager(new GridLayoutManager(this,1));
+                        Events events = new Events(newEventName,newEventDescription,newEventTime,newEventDate,newEventLocation,newEventPrice,newEventCellphone);
+                        eventList = new ArrayList<>();
+                        eventList.add(events);
+                        eventAdapter = new EventAdapter(this,eventList,this);
+                        eventsView.setAdapter(eventAdapter);
+                    }else {
+                        Toast.makeText(this, "You don't have any events booked please go to home page and RSVP", Toast.LENGTH_LONG).show();
+                    }
+
                 }
 
             }

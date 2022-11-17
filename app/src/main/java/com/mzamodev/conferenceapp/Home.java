@@ -486,15 +486,30 @@ public class Home extends AppCompatActivity implements EventsInterface{
         pTime = eventList.get(position).getEventTime();
         pDate = eventList.get(position).getEventDate();
 
-        //set up UI
-        txtPrice.setText("PRICE: $"+pPrice);
-        txtDescription.setText(pDescription);
-        txtDate.setText("DATE"+pDate);
-        txtTime.setText("TIME"+pTime);
-        txtLocation.setText(pLocation);
-        txtEventName.setText(pEventName);
+        if(type.equalsIgnoreCase("user")){
+            //set up UI
+            txtPrice.setText("PRICE: $"+pPrice);
+            txtDescription.setText(pDescription);
+            txtDate.setText("DATE"+pDate);
+            txtTime.setText("TIME"+pTime);
+            txtLocation.setText(pLocation);
+            txtEventName.setText(pEventName);
 
-        //show pay view
-        purchaseWindow.setVisibility(View.VISIBLE);
+            //show pay view
+            purchaseWindow.setVisibility(View.VISIBLE);
+
+        }else if(type.equalsIgnoreCase("admin")){
+            //edit event
+            etEventName.setText(pEventName);
+            etEventDescription.setText(pDescription);
+            etLocation.setText(pLocation);
+            etPrice.setText(pPrice);
+            rbTime.setText(pTime);
+            rbDate.setText(pDate);
+
+            //show pay view
+            createEvent.setVisibility(View.VISIBLE);
+        }
+
     }
 }

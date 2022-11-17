@@ -68,18 +68,30 @@ public class Anouncement extends AppCompatActivity {
                     case R.id.rsvp:
                         Intent open = new Intent(getApplicationContext(),Rsvp.class);
                         //open.putExtra("subject","maths");
+                        open.putExtra("name",name);
+                        open.putExtra("cellphone",cellphone);
+                        open.putExtra("studentNo",studentNo);
+                        open.putExtra("type",type);
                         open.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(open);
                         return true;
                     case R.id.aboutBtn:
                         Intent open1 = new Intent(getApplicationContext(),About.class);
                         //open1.putExtra("email",email);
+                        open1.putExtra("name",name);
+                        open1.putExtra("cellphone",cellphone);
+                        open1.putExtra("studentNo",studentNo);
+                        open1.putExtra("type",type);
                         open1.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(open1);
                         return true;
                     case R.id.homeBtn:
                         Intent open2 = new Intent(getApplicationContext(),Home.class);
                         //open1.putExtra("email",email);
+                        open2.putExtra("name",name);
+                        open2.putExtra("cellphone",cellphone);
+                        open2.putExtra("studentNo",studentNo);
+                        open2.putExtra("type",type);
                         open2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(open2);
                         return true;
