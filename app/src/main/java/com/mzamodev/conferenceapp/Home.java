@@ -568,7 +568,12 @@ public class Home extends AppCompatActivity implements EventsInterface{
             txtTime.setText("TIME"+pTime);
             txtLocation.setText(pLocation);
             txtEventName.setText(pEventName);
-            guests.setText(pGuests);
+
+            if(!pGuests.equalsIgnoreCase("")){
+                guests.setText(pGuests);
+            }else {
+                guests.setText("1");
+            }
 
             //show pay view
             purchaseWindow.setVisibility(View.VISIBLE);
