@@ -93,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
         DBHelper dbHelper = new DBHelper(MainActivity.this);
         dbHelper.clearUser();
 
+        rbUser.setChecked(true);
+
         Toast.makeText(getApplicationContext(), "Connecting to servers please wait", Toast.LENGTH_LONG).show();
 
 
@@ -300,12 +302,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //account type
-    public void rbUserClick(){
+    public void rbUserClick(View v){
         rbUser.setChecked(true);
         rbAdmin.setChecked(false);
         type = "user";
     }
-    public void rbAdminClick(){
+    public void rbAdminClick(View v){
         rbUser.setChecked(false);
         rbAdmin.setChecked(true);
         type = "admin";

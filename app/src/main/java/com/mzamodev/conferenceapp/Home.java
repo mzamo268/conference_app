@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTabHost;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -58,6 +59,7 @@ import com.paypal.checkout.order.CaptureOrderResult;
 import com.paypal.checkout.order.OnCaptureComplete;
 import com.paypal.checkout.order.Order;
 import com.paypal.checkout.order.PurchaseUnit;
+import com.paypal.checkout.paymentbutton.PayPalButton;
 import com.paypal.checkout.paymentbutton.PaymentButtonContainer;
 
 
@@ -99,7 +101,7 @@ public class Home extends AppCompatActivity implements EventsInterface{
     LinearLayout purchaseWindow;
     TextView txtPrice,txtDescription,txtEventName,txtLocation,txtTime,txtDate;
     EditText guests;
-    String pPrice,pDescription,pEventName,pLocation,pTime,pDate,pGuests;
+    String pPrice,pDescription,pEventName,pLocation,pTime,pDate,pGuests="";
 
     PaymentButtonContainer paymentButtonContainer;
 
@@ -132,6 +134,9 @@ public class Home extends AppCompatActivity implements EventsInterface{
         etPrice = (EditText) findViewById(R.id.eventPrice);
         rbTime = (RadioButton) findViewById(R.id.rbTime);
         rbDate = (RadioButton) findViewById(R.id.rbDate);
+
+        //paypal button
+        //paymentButtonContainer = (PaymentButtonContainer) findViewById(R.id.payment_button_container);
 
         //purchase UI
         purchaseWindow = (LinearLayout) findViewById(R.id.purchaseView);
@@ -218,7 +223,7 @@ public class Home extends AppCompatActivity implements EventsInterface{
     private void selectFile() {
         //pick pdf file from storage
         Intent intent = new Intent();
-        intent.setType("Application/pdf");
+        intent.setType("application/pdf");
         intent.setAction(Intent.ACTION_GET_CONTENT);//open storage viewer
         startActivityForResult(intent,86);
     }
@@ -239,7 +244,7 @@ public class Home extends AppCompatActivity implements EventsInterface{
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         //upload success
-                        fileUrl = reference.getDownloadUrl().toString();
+                        //fileUrl = reference.getDownloadUrl().toString();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -252,7 +257,7 @@ public class Home extends AppCompatActivity implements EventsInterface{
 
                         //track upload progress
                         int currentProgress = (int)(100*snapshot.getBytesTransferred()/snapshot.getTotalByteCount());
-                        progressDialog.setTitle(currentProgress);
+                        //progressDialog.setTitle(""+currentProgress);
                         if(currentProgress >= 100){
                             progressDialog.dismiss();
                             Toast.makeText(Home.this, "File was successfully uploaded", Toast.LENGTH_LONG).show();
@@ -569,7 +574,7 @@ public class Home extends AppCompatActivity implements EventsInterface{
             txtLocation.setText(pLocation);
             txtEventName.setText(pEventName);
 
-            if(!pGuests.equalsIgnoreCase("")){
+            if(pGuests != null){
                 guests.setText(pGuests);
             }else {
                 guests.setText("1");
@@ -593,7 +598,7 @@ public class Home extends AppCompatActivity implements EventsInterface{
 
     }
 
-    public void getFile(){
+    public void getFile(View v){
         //boolean isPermited = isStoragePermissionGranted();
         isStoragePermissionGranted();
     }
@@ -631,11 +636,10 @@ public class Home extends AppCompatActivity implements EventsInterface{
     }
 
     //file from storage results
-
-
+    @SuppressLint("MissingSuperCall")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+        //super.onActivityResult(requestCode, resultCode, data);
 
         //check if you got the file or not
         if(requestCode==86 && resultCode==RESULT_OK && data!=null){
