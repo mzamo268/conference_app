@@ -253,6 +253,10 @@ public class Home extends AppCompatActivity implements EventsInterface{
                         //track upload progress
                         int currentProgress = (int)(100*snapshot.getBytesTransferred()/snapshot.getTotalByteCount());
                         progressDialog.setTitle(currentProgress);
+                        if(currentProgress >= 100){
+                            progressDialog.dismiss();
+                            Toast.makeText(Home.this, "File was successfully uploaded", Toast.LENGTH_LONG).show();
+                        }
 
                     }
                 });
