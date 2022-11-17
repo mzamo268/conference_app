@@ -9,11 +9,12 @@ public class Events {
     private String location;
     private String price;
     private String cellphone;
+    private String guest;
 
 
     public Events(){}
 
-    public Events(String eventName, String eventDescription, String eventTime, String eventDate, String location, String price, String cellphone) {
+    public Events(String eventName, String eventDescription, String eventTime, String eventDate, String location, String price, String cellphone,String guest) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.eventTime = eventTime;
@@ -21,8 +22,17 @@ public class Events {
         this.location = location;
         this.price = price;
         this.cellphone = cellphone;
+        this.guest = guest;
     }
 
+
+    public String getGuest() {
+        return guest;
+    }
+
+    public void setGuest(String guest) {
+        this.guest = guest;
+    }
 
     public String getCellphone() {
         return cellphone;

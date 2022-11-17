@@ -220,8 +220,9 @@ public class Home extends AppCompatActivity implements EventsInterface{
                     eventCellphone = events.getCellphone();
                     location = events.getLocation();
                     price = events.getPrice();
+                    pGuests = events.getGuest();
 
-                    dbHelper.insertEventData(eventName,eventDescription,date,time,eventCellphone,location,price);
+                    dbHelper.insertEventData(eventName,eventDescription,date,time,eventCellphone,location,price,pGuests);
 
                 }
                 showEvents();
@@ -259,13 +260,14 @@ public class Home extends AppCompatActivity implements EventsInterface{
                 String newEventPrice = res.getString(4);
                 String newEventCellphone = res.getString(5);
                 String newEventLocation = res.getString(6);
+                String newEventGuest = res.getString(7);
 
                 if(type.equalsIgnoreCase("admin")){
                     if(newEventCellphone.equalsIgnoreCase(cellphone)){
                         eventsView = (RecyclerView) findViewById(R.id.eventsView);
                         eventsView.setHasFixedSize(true);
                         eventsView.setLayoutManager(new GridLayoutManager(this,1));
-                        Events events = new Events(newEventName,newEventDescription,newEventTime,newEventDate,newEventLocation,newEventPrice,newEventCellphone);
+                        Events events = new Events(newEventName,newEventDescription,newEventTime,newEventDate,newEventLocation,newEventPrice,newEventCellphone,newEventGuest);
                         eventList = new ArrayList<>();
                         eventList.add(events);
                         eventAdapter = new EventAdapter(this,eventList,this);
@@ -277,7 +279,7 @@ public class Home extends AppCompatActivity implements EventsInterface{
                     eventsView = (RecyclerView) findViewById(R.id.eventsView);
                     eventsView.setHasFixedSize(true);
                     eventsView.setLayoutManager(new GridLayoutManager(this,1));
-                    Events events = new Events(newEventName,newEventDescription,newEventTime,newEventDate,newEventLocation,newEventPrice,newEventCellphone);
+                    Events events = new Events(newEventName,newEventDescription,newEventTime,newEventDate,newEventLocation,newEventPrice,newEventCellphone,newEventGuest);
                     eventList = new ArrayList<>();
                     eventList.add(events);
                     eventAdapter = new EventAdapter(this,eventList,this);
@@ -306,7 +308,7 @@ public class Home extends AppCompatActivity implements EventsInterface{
 
         String id = "event"+cellphone +createDate+createTime;
         //push to firebase
-        Events events = new Events(eName,eDescription,createTime,createDate,eLocation,ePrice,cellphone);
+        Events events = new Events(eName,eDescription,createTime,createDate,eLocation,ePrice,cellphone,"1");
         database.child(id).setValue(events);
 
         Toast.makeText(this, "Event Uploaded successfully", Toast.LENGTH_LONG).show();
@@ -417,7 +419,7 @@ public class Home extends AppCompatActivity implements EventsInterface{
 
                                 String id = "event"+cellphone +createDate+createTime;
                                 //push to firebase
-                                Events events = new Events(eName,eDescription,createTime,createDate,eLocation,ePrice,cellphone);
+                                Events events = new Events(eName,eDescription,createTime,createDate,eLocation,ePrice,cellphone,pGuests);
                                 database.child(id).setValue(events);
 
                                 Toast.makeText(Home.this, "RSVP SUCCESSFUL", Toast.LENGTH_LONG).show();
@@ -485,6 +487,7 @@ public class Home extends AppCompatActivity implements EventsInterface{
         pEventName = eventList.get(position).getEventName();
         pTime = eventList.get(position).getEventTime();
         pDate = eventList.get(position).getEventDate();
+        pGuests = eventList.get(position).getGuest();
 
         if(type.equalsIgnoreCase("user")){
             //set up UI
@@ -494,6 +497,7 @@ public class Home extends AppCompatActivity implements EventsInterface{
             txtTime.setText("TIME"+pTime);
             txtLocation.setText(pLocation);
             txtEventName.setText(pEventName);
+            guests.setText(pGuests);
 
             //show pay view
             purchaseWindow.setVisibility(View.VISIBLE);

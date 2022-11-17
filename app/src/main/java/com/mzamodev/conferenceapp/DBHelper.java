@@ -31,7 +31,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL("create table user(studentNo Text primary Key,password Text ,name Text,cellphone Text,type Text)");
-        db.execSQL("create table event(eventName Text,eventDescription Text,date Text,time Text,price Text,cellphone Text,location Text)");
+        db.execSQL("create table event(eventName Text,eventDescription Text,date Text,time Text,price Text,cellphone Text,location Text,guests Text)");
         db.execSQL("create table chat(name Text,cellphone Text,message Text)");
     }
 
@@ -65,7 +65,7 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //event data control
-    public Boolean insertEventData(String eventName,String eventDescription,String date,String time,String cellphone,String location,String price){
+    public Boolean insertEventData(String eventName,String eventDescription,String date,String time,String cellphone,String location,String price,String guests){
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -76,6 +76,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("cellphone",cellphone);
         contentValues.put("location",location);
         contentValues.put("price",price);
+        contentValues.put("guests",guests);
         //contentValues.put("province",province);
 
         long results = db.insert("event",null,contentValues);

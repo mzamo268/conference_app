@@ -3,10 +3,13 @@ package com.mzamodev.conferenceapp;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -53,10 +56,13 @@ public class Rsvp extends AppCompatActivity implements EventsInterface{
 
     //purchase window code
     LinearLayout purchaseWindow,qrWindow;
-    TextView txtPrice,txtDescription,txtEventName,txtLocation,txtTime,txtDate;
+    //TextView txtPrice,txtDescription,txtEventName,txtLocation,txtTime,txtDate;
     EditText guests;
     String pPrice,pDescription,pEventName,pLocation,pTime,pDate,pGuests;
     ImageView qrImage;
+
+    //event overview
+    TextView txtEventName,txtEventDate,txtPrice,txtGuests;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +71,12 @@ public class Rsvp extends AppCompatActivity implements EventsInterface{
 
         qrWindow = (LinearLayout) findViewById(R.id.qrWindow);
         qrImage = (ImageView) findViewById(R.id.qrCode);
+
+        //event overview
+        txtEventName = (TextView) findViewById(R.id.txtEventName);
+        txtEventDate = (TextView) findViewById(R.id.txtEventDate);
+        txtPrice = (TextView) findViewById(R.id.txtPrice);
+        txtGuests = (TextView) findViewById(R.id.txtEventGuests);
 
         //get parsed user info
         name = getIntent().getStringExtra("name");
@@ -129,9 +141,15 @@ public class Rsvp extends AppCompatActivity implements EventsInterface{
         DBHelper dbHelper = new DBHelper(getApplicationContext());
         dbHelper.clearAllEvents();
         //dbHelper.clearUser();
-        
-        //firebase Stuff
-        database = FirebaseDatabase.getInstance().getReference("Conference").child("rsvp");
+
+        if(type.equalsIgnoreCase("user")){
+            //firebase Stuff
+            database = FirebaseDatabase.getInstance().getReference("Conference").child("rsvp");
+        }else if(type.equalsIgnoreCase("admin")){
+            //firebase Stuff
+            database = FirebaseDatabase.getInstance().getReference("Conference").child("events");
+        }
+
         //reading from firebase
         database.addValueEventListener(new ValueEventListener() {
             @Override
@@ -149,8 +167,9 @@ public class Rsvp extends AppCompatActivity implements EventsInterface{
                     eventCellphone = events.getCellphone();
                     location = events.getLocation();
                     price = events.getPrice();
+                    pGuests =  events.getGuest();
 
-                    dbHelper.insertEventData(eventName,eventDescription,date,time,eventCellphone,location,price);
+                    dbHelper.insertEventData(eventName,eventDescription,date,time,eventCellphone,location,price,pGuests);
 
                 }
                 showEvents();
@@ -187,6 +206,7 @@ public class Rsvp extends AppCompatActivity implements EventsInterface{
                 String newEventPrice = res.getString(4);
                 String newEventCellphone = res.getString(5);
                 String newEventLocation = res.getString(6);
+                String newEventGuest = res.getString(7);
 
                 if(type.equalsIgnoreCase("admin")){
 
@@ -194,7 +214,7 @@ public class Rsvp extends AppCompatActivity implements EventsInterface{
                         eventsView = (RecyclerView) findViewById(R.id.eventsView);
                         eventsView.setHasFixedSize(true);
                         eventsView.setLayoutManager(new GridLayoutManager(this,1));
-                        Events events = new Events(newEventName,newEventDescription,newEventTime,newEventDate,newEventLocation,newEventPrice,newEventCellphone);
+                        Events events = new Events(newEventName,newEventDescription,newEventTime,newEventDate,newEventLocation,newEventPrice,newEventCellphone,newEventGuest);
                         eventList = new ArrayList<>();
                         eventList.add(events);
                         eventAdapter = new EventAdapter(this,eventList,this);
@@ -209,7 +229,7 @@ public class Rsvp extends AppCompatActivity implements EventsInterface{
                         eventsView = (RecyclerView) findViewById(R.id.eventsView);
                         eventsView.setHasFixedSize(true);
                         eventsView.setLayoutManager(new GridLayoutManager(this,1));
-                        Events events = new Events(newEventName,newEventDescription,newEventTime,newEventDate,newEventLocation,newEventPrice,newEventCellphone);
+                        Events events = new Events(newEventName,newEventDescription,newEventTime,newEventDate,newEventLocation,newEventPrice,newEventCellphone,newEventGuest);
                         eventList = new ArrayList<>();
                         eventList.add(events);
                         eventAdapter = new EventAdapter(this,eventList,this);
@@ -228,6 +248,95 @@ public class Rsvp extends AppCompatActivity implements EventsInterface{
 
     }
 
+    //firebase database read
+    void getRSVPData(){
+
+        //clear database tables
+        DBHelper dbHelper = new DBHelper(getApplicationContext());
+        dbHelper.clearAllEvents();
+        //dbHelper.clearUser();
+
+        //firebase Stuff
+        database = FirebaseDatabase.getInstance().getReference("Conference").child("rsvp");
+        //reading from firebase
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                for(DataSnapshot keyNode : dataSnapshot.getChildren()){
+                    //progress.setVisibility(View.INVISIBLE);//hide loading
+
+                    Events events = keyNode.getValue(Events.class);
+                    eventName = events.getEventName();
+                    eventDescription = events.getEventDescription();
+                    time = events.getEventTime();
+                    date = events.getEventDate();
+                    eventCellphone = events.getCellphone();
+                    location = events.getLocation();
+                    price = events.getPrice();
+                    pGuests = events.getGuest();
+
+                    dbHelper.insertEventData(eventName,eventDescription,date,time,eventCellphone,location,price,pGuests);
+
+                }
+                getRsvpUser();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Failed to read value
+                //Log.L(TAG, "Failed to read value.", error.toException());
+                Toast.makeText(getApplicationContext(), "Server connection Error", Toast.LENGTH_LONG).show();
+                //progress.setVisibility(View.INVISIBLE);
+
+            }
+        });
+
+    }
+
+    //rsvp data control
+    private void getRsvpUser() {
+
+        double totalFinal = 0.0;
+        int finalGuests = 0;
+        //chatLayout.removeAllViews();
+        DBHelper dbHelper = new DBHelper(Rsvp.this);
+        Cursor res = dbHelper.getAllEvents();
+        if(res.getCount() == 0){
+            Toast.makeText(this, "No Events yet...", Toast.LENGTH_LONG).show();
+        }else{
+            while(res.moveToNext()){
+
+                String newEventName = res.getString(0);
+                String newEventDescription = res.getString(1);
+                String newEventTime = res.getString(3);
+                String newEventDate = res.getString(2);
+                String newEventPrice = res.getString(4);
+                String newEventCellphone = res.getString(5);
+                String newEventLocation = res.getString(6);
+                String newEventGuest = res.getString(7);
+
+                int g = Integer.parseInt(newEventGuest);
+                double p = Double.parseDouble(newEventPrice);
+
+                double t = p * g;
+                totalFinal =  totalFinal + t;
+                finalGuests = finalGuests + g;
+
+                //Toast.makeText(this, "You don't have any events posted. post an event in home Tab", Toast.LENGTH_LONG).show();
+
+            }
+            if(!res.moveToNext()){
+                dbHelper.clearAllEvents();
+                popupDialog("Total Guest : "+finalGuests+"\nRevenue : "+totalFinal,Rsvp.this);
+            }
+        }
+
+    }
+
+
     @Override
     public void onItemClick(int position) {
         pPrice = eventList.get(position).getPrice();
@@ -237,22 +346,60 @@ public class Rsvp extends AppCompatActivity implements EventsInterface{
         pTime = eventList.get(position).getEventTime();
         pDate = eventList.get(position).getEventDate();
 
-        //show QR code
-        String qrValue = "Conference App event admission";
-        // Initializing the QR Encoder with your value to be encoded, type you required and Dimension
-        QRGEncoder qrgEncoder = new QRGEncoder(qrValue, null, QRGContents.Type.TEXT, 10);
-        qrgEncoder.setColorBlack(Color.RED);
-        qrgEncoder.setColorWhite(Color.BLUE);
-        try {
-            // Getting QR-Code as Bitmap
-            Bitmap bitmap = qrgEncoder.getBitmap();
-            // Setting Bitmap to ImageView
-            qrImage.setImageBitmap(bitmap);
-            qrWindow.setVisibility(View.VISIBLE);
+        if(type.equalsIgnoreCase("user")){
 
-        } catch (Exception e) {
-            Log.v(TAG, e.toString());
+            String newDate = pDate +" "+pTime;
+
+            txtEventName.setText(pEventName);
+            txtPrice.setText(pEventName);
+            txtGuests.setText("Guests: "+pGuests);
+            txtEventDate.setText(newDate);
+
+            //show QR code
+            String qrValue = "Conference App event admission";
+            // Initializing the QR Encoder with your value to be encoded, type you required and Dimension
+            QRGEncoder qrgEncoder = new QRGEncoder(qrValue, null, QRGContents.Type.TEXT, 10);
+            qrgEncoder.setColorBlack(Color.RED);
+            qrgEncoder.setColorWhite(Color.BLUE);
+            try {
+                // Getting QR-Code as Bitmap
+                Bitmap bitmap = qrgEncoder.getBitmap();
+                // Setting Bitmap to ImageView
+                qrImage.setImageBitmap(bitmap);
+                qrWindow.setVisibility(View.VISIBLE);
+
+            } catch (Exception e) {
+                Log.v(TAG, e.toString());
+            }
+
+        }else if(type.equalsIgnoreCase("admin")){
+
+            getRSVPData();
+
         }
+
+    }
+
+    void popupDialog(String message, Context context){
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        builder1.setMessage(message);
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "Dismiss",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        //Starting whatsapp conversation.
+                        //String url = "https://api.whatsapp.com/send?phone="+number;
+                        //Intent i = new Intent(Intent.ACTION_VIEW);
+                        //i.setData(Uri.parse(url));
+                        //startActivity(i);
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
     }
 
     @Override
