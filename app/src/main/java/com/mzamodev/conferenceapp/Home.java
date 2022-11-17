@@ -91,7 +91,10 @@ public class Home extends AppCompatActivity implements EventsInterface{
 
     PaymentButtonContainer paymentButtonContainer;
 
-    LinearLayout paypal;
+    LinearLayout paypal,profileView;
+
+    //profile stuff
+    TextView txtName,txtEmail,txtCell,txtType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +122,22 @@ public class Home extends AppCompatActivity implements EventsInterface{
         txtDate = (TextView) findViewById(R.id.txtDate);
         guests = (EditText) findViewById(R.id.txtItemQuantity);
 
+        //profile stuff
+        txtName = (TextView) findViewById(R.id.txtName);
+        txtCell  = (TextView) findViewById(R.id.txtPhone);
+        txtEmail  = (TextView) findViewById(R.id.txtEmail);
+        txtType = (TextView) findViewById(R.id.txtType);
+        profileView = (LinearLayout) findViewById(R.id.profileView);
+
+        //user data
+        name = getIntent().getStringExtra("name");
+        cellphone = getIntent().getStringExtra("cellphone");
+        type = getIntent().getStringExtra("type");
+        studentNo = getIntent().getStringExtra("studentNo");
+        //show profile data
+        showProfile();
+
+
         //etTheme = (EditText) findViewById(R.id.floatingUI);
 
         //initializing bottom navigation
@@ -135,18 +154,30 @@ public class Home extends AppCompatActivity implements EventsInterface{
                     case R.id.rsvp:
                         Intent open = new Intent(getApplicationContext(),Rsvp.class);
                         //open.putExtra("subject","maths");
+                        open.putExtra("name",name);
+                        open.putExtra("cellphone",cellphone);
+                        open.putExtra("studentNo",studentNo);
+                        open.putExtra("type",type);
                         open.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(open);
                         return true;
                     case R.id.aboutBtn:
                         Intent open1 = new Intent(getApplicationContext(),About.class);
                         //open1.putExtra("email",email);
+                        open1.putExtra("name",name);
+                        open1.putExtra("cellphone",cellphone);
+                        open1.putExtra("studentNo",studentNo);
+                        open1.putExtra("type",type);
                         open1.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(open1);
                         return true;
                     case R.id.anouncements:
                         Intent open2 = new Intent(getApplicationContext(),Anouncement.class);
                         //open1.putExtra("email",email);
+                        open2.putExtra("name",name);
+                        open2.putExtra("cellphone",cellphone);
+                        open2.putExtra("studentNo",studentNo);
+                        open2.putExtra("type",type);
                         open2.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         startActivity(open2);
                         return true;
@@ -226,14 +257,30 @@ public class Home extends AppCompatActivity implements EventsInterface{
                 String newEventCellphone = res.getString(5);
                 String newEventLocation = res.getString(6);
 
-                eventsView = (RecyclerView) findViewById(R.id.eventsView);
-                eventsView.setHasFixedSize(true);
-                eventsView.setLayoutManager(new GridLayoutManager(this,1));
-                Events events = new Events(newEventName,newEventDescription,newEventTime,newEventDate,newEventLocation,newEventPrice,newEventCellphone);
-                eventList = new ArrayList<>();
-                eventList.add(events);
-                eventAdapter = new EventAdapter(this,eventList,this);
-                eventsView.setAdapter(eventAdapter);
+                if(type.equalsIgnoreCase("admin")){
+                    if(newEventCellphone.equalsIgnoreCase(cellphone)){
+                        eventsView = (RecyclerView) findViewById(R.id.eventsView);
+                        eventsView.setHasFixedSize(true);
+                        eventsView.setLayoutManager(new GridLayoutManager(this,1));
+                        Events events = new Events(newEventName,newEventDescription,newEventTime,newEventDate,newEventLocation,newEventPrice,newEventCellphone);
+                        eventList = new ArrayList<>();
+                        eventList.add(events);
+                        eventAdapter = new EventAdapter(this,eventList,this);
+                        eventsView.setAdapter(eventAdapter);
+                        Toast.makeText(this, "showing events you created", Toast.LENGTH_LONG).show();
+                    }
+
+                }else {
+                    eventsView = (RecyclerView) findViewById(R.id.eventsView);
+                    eventsView.setHasFixedSize(true);
+                    eventsView.setLayoutManager(new GridLayoutManager(this,1));
+                    Events events = new Events(newEventName,newEventDescription,newEventTime,newEventDate,newEventLocation,newEventPrice,newEventCellphone);
+                    eventList = new ArrayList<>();
+                    eventList.add(events);
+                    eventAdapter = new EventAdapter(this,eventList,this);
+                    eventsView.setAdapter(eventAdapter);
+                }
+
             }
             if(!res.moveToNext()){
                 dbHelper.clearAllEvents();
@@ -396,12 +443,35 @@ public class Home extends AppCompatActivity implements EventsInterface{
         ));
     }
 
+    void showProfile(){
+        txtName.setText(name);
+        txtType.setText(type);
+        txtCell.setText(cellphone);
+        txtEmail.setText(studentNo);
+    }
+
+    public void viewProfile(View v){
+        profileView.setVisibility(View.VISIBLE);
+    }
+
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
         createEvent.setVisibility(View.INVISIBLE);
         purchaseWindow.setVisibility(View.INVISIBLE);
         paypal.setVisibility(View.INVISIBLE);
+        profileView.setVisibility(View.INVISIBLE);
+    }
+
+    public void logout(View v){
+        //delete user sqlite
+        DBHelper dbHelper = new DBHelper(getApplicationContext());
+        dbHelper.clearUser();
+        dbHelper.clearUserLogin();
+
+        //go to main Activity (Login/Registration)
+        Intent open2 = new Intent(getApplicationContext(),MainActivity.class);
+        startActivity(open2);
     }
 
     @Override

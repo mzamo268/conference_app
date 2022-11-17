@@ -23,6 +23,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
+                android:onClick="viewProfile"
                 android:src="@drawable/profile"/>
 
             <TextView
@@ -614,15 +615,17 @@
 
     </LinearLayout>
 
+    <!--Paypal button-->
     <LinearLayout
         android:id="@+id/paypal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#4F000000"
         android:gravity="bottom"
-        android:visibility="invisible">
+        android:visibility="invisible"
+        android:orientation="vertical">
 
-        <com.paypal.checkout.paymentbutton.PaymentButtonContainer
+        <!--com.paypal.checkout.paymentbutton.PaymentButtonContainer
             android:id="@+id/payment_button_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -630,7 +633,7 @@
             app:paypal_button_label="pay"
             app:paypal_button_shape="rectangle"
             app:paypal_button_size="large"
-            app:paypal_button_enabled="true" />
+            app:paypal_button_enabled="true" /-->
 
     </LinearLayout>
 
@@ -666,5 +669,96 @@
     </LinearLayout>
 
     <!--Profile view-->
+    <LinearLayout
+        android:id="@+id/profileView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#4F000000"
+        android:gravity="center"
+        android:visibility="visible"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/rounded_coners">
+
+            <LinearLayout
+                android:layout_marginStart="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/txtName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="23sp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:text="Mzamo H Mbhele"/>
+
+                <TextView
+                    android:id="@+id/txtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:text="mzamo@mzamodev.com"/>
+
+                <TextView
+                    android:id="@+id/txtPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textAlignment="center"
+                    android:text="0788563580"/>
+
+                <TextView
+                    android:id="@+id/txtType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textAlignment="center"
+                    android:text="Admin"/>
+
+                <!--Logout-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="@drawable/round_button">
+
+                    <Button
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Logout"
+                        android:textSize="20sp"
+                        android:onClick="logout"
+                        android:textAllCaps="false"
+                        android:textColor="#000000"
+                        android:background="#00FFFFFF"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>
