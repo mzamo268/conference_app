@@ -28,11 +28,11 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Anouncement extends AppCompatActivity {
 
-    LinearLayout chats,sendChat;
+    LinearLayout chats,sendChat,floatingUI;
     DatabaseReference database;
 
     //user info
-    String name,cellphone;
+    String name,cellphone,studentNo,type;
     EditText etChat;
 
     @Override
@@ -43,6 +43,16 @@ public class Anouncement extends AppCompatActivity {
         chats = (LinearLayout) findViewById(R.id.chats);
         sendChat = (LinearLayout) findViewById(R.id.sendChat);
         etChat = (EditText) findViewById(R.id.etMessage);
+        floatingUI  = (LinearLayout) findViewById(R.id.floatingUI);
+
+        name = getIntent().getStringExtra("name");
+        cellphone = getIntent().getStringExtra("cellphone");
+        type = getIntent().getStringExtra("type");
+        studentNo = getIntent().getStringExtra("studentNo");
+
+        if(type.equalsIgnoreCase("user")){
+            floatingUI.setVisibility(View.INVISIBLE);
+        }
 
         //initializing bottom navigation
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNav);
@@ -233,6 +243,8 @@ public class Anouncement extends AppCompatActivity {
 
             database.child(id).setValue(obj);
             etChat.setText("");
+            sendChat.setVisibility(View.INVISIBLE);
+            Toast.makeText(this, "Message Posted", Toast.LENGTH_LONG).show();
         }
 
         //sve to sqlite

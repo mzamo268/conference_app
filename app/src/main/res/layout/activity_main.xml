@@ -460,6 +460,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="3dp"
                                 android:text="User"
+                                android:onClick="rbUserClick"
                                 android:textStyle="bold"
                                 android:textSize="20sp"/>
 
@@ -469,6 +470,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_margin="3dp"
                                 android:layout_marginStart="5dp"
+                                android:onClick="rbAdminClick"
                                 android:text="Admin"
                                 android:textStyle="bold"
                                 android:textSize="20sp"/>

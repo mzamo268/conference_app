@@ -137,6 +137,9 @@ public class Home extends AppCompatActivity implements EventsInterface{
         //show profile data
         showProfile();
 
+        if(type.equalsIgnoreCase("user")){
+            floatingUI.setVisibility(View.INVISIBLE);
+        }
 
         //etTheme = (EditText) findViewById(R.id.floatingUI);
 

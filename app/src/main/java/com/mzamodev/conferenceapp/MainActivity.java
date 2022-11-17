@@ -298,6 +298,18 @@ public class MainActivity extends AppCompatActivity {
         open.putExtra("type",type);
         startActivity(open);
     }
+
+    //account type
+    public void rbUserClick(){
+        rbUser.setChecked(true);
+        rbAdmin.setChecked(false);
+        type = "user";
+    }
+    public void rbAdminClick(){
+        rbUser.setChecked(false);
+        rbAdmin.setChecked(true);
+        type = "admin";
+    }
     
     @Override
     public void onBackPressed() {
