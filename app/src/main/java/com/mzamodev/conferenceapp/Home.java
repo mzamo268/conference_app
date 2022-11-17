@@ -136,7 +136,7 @@ public class Home extends AppCompatActivity implements EventsInterface{
         rbDate = (RadioButton) findViewById(R.id.rbDate);
 
         //paypal button
-        //paymentButtonContainer = (PaymentButtonContainer) findViewById(R.id.payment_button_container);
+        paymentButtonContainer = (PaymentButtonContainer) findViewById(R.id.payment_button_container);
 
         //purchase UI
         purchaseWindow = (LinearLayout) findViewById(R.id.purchaseView);

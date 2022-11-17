@@ -45,11 +45,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
     implementation 'com.github.Kunzisoft:Android-SwitchDateTimePicker:2.1'
-    implementation('com.paypal.checkout:android-sdk:0.8.0')
+    implementation('com.paypal.checkout:android-sdk:0.8.6')
 
     implementation 'com.github.androidmads:QRGenerator:1.0.1'
 
     //implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.0'
-    ///jgjjjgui
-    //
+    ///juogi7tgygty
+    //ouoyugh
+
 }
