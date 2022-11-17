@@ -358,6 +358,41 @@
                         android:background="#00EAFF"
                         android:textStyle="bold"/>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:onClick="getFile"
+                        android:layout_marginEnd="35dp"
+                        android:layout_marginStart="35dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/edit_text">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_margin="10dp"
+                            android:onClick="getFile"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/paperclip" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:layout_marginEnd="10dp"
+                            android:layout_marginStart="10dp"
+                            android:text="Add Abstract"
+                            android:onClick="getFile"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            android:textAllCaps="true"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </ScrollView>
@@ -579,6 +614,42 @@
                                 android:layout_marginEnd="10dp"
                                 android:layout_marginBottom="10dp"
                                 android:background="#ffff"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="15dp"
+                            android:onClick="getFile"
+                            android:layout_marginEnd="35dp"
+                            android:layout_marginStart="35dp"
+                            android:layout_marginBottom="10dp"
+                            android:orientation="horizontal"
+                            android:background="@drawable/edit_text">
+
+                            <ImageView
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_margin="10dp"
+                                android:onClick="getFile"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="10dp"
+                                android:src="@drawable/paperclip" />
+
+                            <TextView
+                                android:id="@+id/txtTittle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="15dp"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginStart="10dp"
+                                android:text="Speakers List"
+                                android:onClick="getFile"
+                                android:textColor="#000000"
+                                android:textSize="20sp"
+                                android:textAllCaps="true"
+                                android:textStyle="bold" />
 
                         </LinearLayout>
 

@@ -3,13 +3,19 @@ package com.mzamodev.conferenceapp;
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTabHost;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -21,6 +27,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -29,6 +37,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import com.google.firebase.database.annotations.NotNull;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
 import com.paypal.checkout.PayPalCheckout;
 import com.paypal.checkout.approve.Approval;
@@ -95,6 +107,16 @@ public class Home extends AppCompatActivity implements EventsInterface{
 
     //profile stuff
     TextView txtName,txtEmail,txtCell,txtType;
+
+    //firebase upload file
+    FirebaseStorage storage;
+
+    Uri pdfUri;//uri local storage paths
+
+    //handling attached files
+    String fileUrl;
+
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,6 +213,51 @@ public class Home extends AppCompatActivity implements EventsInterface{
         getEvent();
 
         initPaypal();
+    }
+
+    private void selectFile() {
+        //pick pdf file from storage
+        Intent intent = new Intent();
+        intent.setType("Application/pdf");
+        intent.setAction(Intent.ACTION_GET_CONTENT);//open storage viewer
+        startActivityForResult(intent,86);
+    }
+    void uploadToFirebase(Uri path){
+
+        //configure progress tracker/dialog
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setTitle("uploading file...");
+        progressDialog.setProgress(0);
+        progressDialog.show();
+
+        storage = FirebaseStorage.getInstance();
+        StorageReference reference = storage.getReference();
+        //uploaded into uploads folder
+        reference.child("uploads").putFile(path)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        //upload success
+                        fileUrl = reference.getDownloadUrl().toString();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //upload failed
+                    }
+                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+
+                        //track upload progress
+                        int currentProgress = (int)(100*snapshot.getBytesTransferred()/snapshot.getTotalByteCount());
+                        progressDialog.setTitle(currentProgress);
+
+                    }
+                });
+
+
     }
 
     //firebase database read
@@ -515,5 +582,60 @@ public class Home extends AppCompatActivity implements EventsInterface{
             createEvent.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    public void getFile(){
+        //boolean isPermited = isStoragePermissionGranted();
+        isStoragePermissionGranted();
+    }
+
+    //storage rad permission
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v(TAG,"Permission is granted");
+                selectFile();
+                return true;
+            } else {
+
+                Log.v(TAG,"Permission is revoked");
+                ActivityCompat.requestPermissions(Home.this, new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+    else { //permission is automatically granted on sdk&lt;23 upon installation
+            Log.v(TAG,"Permission is granted");
+            return true;
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
+            //resume tasks needing this permission
+            selectFile();
+        }else {
+            Toast.makeText(this, "Permission not grated", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    //file from storage results
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //check if you got the file or not
+        if(requestCode==86 && resultCode==RESULT_OK && data!=null){
+
+            pdfUri = data.getData();//uri f elected file
+            uploadToFirebase(pdfUri);
+
+        }else{
+            Toast.makeText(this, "No file was selected", Toast.LENGTH_LONG).show();
+        }
     }
 }
