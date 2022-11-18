@@ -33,6 +33,9 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("create table user(studentNo Text primary Key,password Text ,name Text,cellphone Text,type Text)");
         db.execSQL("create table event(eventName Text,eventDescription Text,date Text,time Text,price Text,cellphone Text,location Text,guests Text)");
         db.execSQL("create table chat(name Text,cellphone Text,message Text)");
+        //login data
+        db.execSQL("create table login(studentNo Text primary Key,password Text ,name Text,cellphone Text,type Text)");
+
     }
 
     /**
@@ -62,6 +65,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("drop Table if exists user");
         db.execSQL("drop Table if exists event");
         db.execSQL("drop Table if exists chat");
+        db.execSQL("drop Table if exists login");
     }
 
     //event data control
@@ -115,7 +119,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("type",type);
         //contentValues.put("province",province);
 
-        long results = db.insert("user",null,contentValues);
+        long results = db.insert("login",null,contentValues);
 
         if(results == -1){
             return false;
@@ -141,7 +145,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if(cursor.getCount() > 0){
 
-            long results = db.update("user",contentValues,"examNumber=?",new String[] {studentNo});
+            long results = db.update("login",contentValues,"examNumber=?",new String[] {studentNo});
 
             if(results == -1){
                 return false;
@@ -150,7 +154,7 @@ public class DBHelper extends SQLiteOpenHelper {
             }
 
         }else{
-            insertData(studentNo,password,name,cellphone,type);
+            insertDataLogin(studentNo,password,name,cellphone,type);
             return false;
         }
 
@@ -159,21 +163,21 @@ public class DBHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
         //Cursor cursor = db.rawQuery("Select * from user",null);
-        Cursor cursor = db.rawQuery("Select * from user where studentNo = ?",new String[] {studentNo});
+        Cursor cursor = db.rawQuery("Select * from login where studentNo = ?",new String[] {studentNo});
         return cursor;
 
     }
     public Cursor getUserInfoLogin(){
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("Select * from user",null);
+        Cursor cursor = db.rawQuery("Select * from login",null);
         //Cursor cursor = db.rawQuery("Select * from user where email = ?",new String[] {email});
         return cursor;
 
     }
     public void clearUserLogin(){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("delete from user");
+        db.execSQL("delete from login");
         db.close();
     }
 

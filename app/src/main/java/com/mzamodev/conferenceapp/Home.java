@@ -555,7 +555,7 @@ public class Home extends AppCompatActivity implements EventsInterface{
         dbHelper.clearUserLogin();
 
         //go to main Activity (Login/Registration)
-        Intent open2 = new Intent(getApplicationContext(),MainActivity.class);
+        Intent open2 = new Intent(getApplicationContext(),Splash.class);
         startActivity(open2);
     }
 

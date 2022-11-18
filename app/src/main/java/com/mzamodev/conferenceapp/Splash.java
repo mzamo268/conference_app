@@ -47,7 +47,7 @@ public class Splash extends AppCompatActivity {
 
     void loadData(){
         DBHelper dbHelper = new DBHelper(getApplicationContext());
-        Cursor res = dbHelper.getUserInfo();
+        Cursor res = dbHelper.getUserInfoLogin();
         if(res.getCount() == 0){
             Toast.makeText(this, ".WELCOME.", Toast.LENGTH_LONG).show();
             Intent mySuperIntent = new Intent(Splash.this, MainActivity.class);
