@@ -103,7 +103,7 @@ public class Home extends AppCompatActivity implements EventsInterface{
     EditText guests;
     String pPrice,pDescription,pEventName,pLocation,pTime,pDate,pGuests="";
 
-    PaymentButtonContainer paymentButtonContainer;
+    //PaymentButtonContainer paymentButtonContainer;
 
     LinearLayout paypal,profileView;
 
@@ -119,6 +119,8 @@ public class Home extends AppCompatActivity implements EventsInterface{
     String fileUrl;
 
     ProgressDialog progressDialog;
+
+    PayPalButton payPalButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +138,8 @@ public class Home extends AppCompatActivity implements EventsInterface{
         rbDate = (RadioButton) findViewById(R.id.rbDate);
 
         //paypal button
-        paymentButtonContainer = (PaymentButtonContainer) findViewById(R.id.payment_button_container);
+        //paymentButtonContainer = (PaymentButtonContainer) findViewById(R.id.payment_button_container);
+        payPalButton = (PayPalButton) findViewById(R.id.paypalButton);
 
         //purchase UI
         purchaseWindow = (LinearLayout) findViewById(R.id.purchaseView);
@@ -456,7 +459,8 @@ public class Home extends AppCompatActivity implements EventsInterface{
         double tot = priceDec * going;
         String newPricefinal = ""+tot;
 
-        paymentButtonContainer.setup(
+        //paymentButtonContainer
+        payPalButton.setup(
                 new CreateOrder() {
                     @Override
                     public void create(@NotNull CreateOrderActions createOrderActions) {
@@ -518,7 +522,7 @@ public class Home extends AppCompatActivity implements EventsInterface{
                 getApplication(),
                 YOUR_CLIENT_ID,
                 Environment.SANDBOX,
-                BuildConfig.APPLICATION_ID + "://paypalpay",
+                BuildConfig.APPLICATION_ID+ "://paypalpay",
                 CurrencyCode.USD,
                 UserAction.PAY_NOW
         ));
