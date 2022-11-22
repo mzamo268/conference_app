@@ -341,19 +341,20 @@ public class Home extends AppCompatActivity implements EventsInterface{
                 String newEventLocation = res.getString(6);
                 String newEventGuest = res.getString(7);
 
-                if(type.equalsIgnoreCase("admin")){
-                    if(newEventCellphone.equalsIgnoreCase(cellphone)){
-                        eventsView = (RecyclerView) findViewById(R.id.eventsView);
-                        eventsView.setHasFixedSize(true);
-                        eventsView.setLayoutManager(new GridLayoutManager(this,1));
-                        Events events = new Events(newEventName,newEventDescription,newEventTime,newEventDate,newEventLocation,newEventPrice,newEventCellphone,newEventGuest);
-                        eventList = new ArrayList<>();
-                        eventList.add(events);
-                        eventAdapter = new EventAdapter(this,eventList,this);
-                        eventsView.setAdapter(eventAdapter);
-                        Toast.makeText(this, "showing events you created", Toast.LENGTH_LONG).show();
+                if(type.equalsIgnoreCase("admin")) {
+                    if (newEventCellphone != null) {
+                        if(newEventCellphone.equalsIgnoreCase(cellphone)){
+                            eventsView = (RecyclerView) findViewById(R.id.eventsView);
+                            eventsView.setHasFixedSize(true);
+                            eventsView.setLayoutManager(new GridLayoutManager(this, 1));
+                            Events events = new Events(newEventName, newEventDescription, newEventTime, newEventDate, newEventLocation, newEventPrice, newEventCellphone, newEventGuest);
+                            eventList = new ArrayList<>();
+                            eventList.add(events);
+                            eventAdapter = new EventAdapter(this, eventList, this);
+                            eventsView.setAdapter(eventAdapter);
+                            Toast.makeText(this, "showing events you created", Toast.LENGTH_LONG).show();
+                        }
                     }
-
                 }else {
                     eventsView = (RecyclerView) findViewById(R.id.eventsView);
                     eventsView.setHasFixedSize(true);
