@@ -210,15 +210,17 @@ public class Rsvp extends AppCompatActivity implements EventsInterface{
 
                 if(type.equalsIgnoreCase("admin")){
 
-                    if(newEventCellphone.equalsIgnoreCase(cellphone)){
-                        eventsView = (RecyclerView) findViewById(R.id.eventsView);
-                        eventsView.setHasFixedSize(true);
-                        eventsView.setLayoutManager(new GridLayoutManager(this,1));
-                        Events events = new Events(newEventName,newEventDescription,newEventTime,newEventDate,newEventLocation,newEventPrice,newEventCellphone,newEventGuest);
-                        eventList = new ArrayList<>();
-                        eventList.add(events);
-                        eventAdapter = new EventAdapter(this,eventList,this);
-                        eventsView.setAdapter(eventAdapter);
+                    if(newEventCellphone != null){
+                        if ( newEventCellphone.equalsIgnoreCase(cellphone)) {
+                            eventsView = (RecyclerView) findViewById(R.id.eventsView);
+                            eventsView.setHasFixedSize(true);
+                            eventsView.setLayoutManager(new GridLayoutManager(this, 1));
+                            Events events = new Events(newEventName, newEventDescription, newEventTime, newEventDate, newEventLocation, newEventPrice, newEventCellphone, newEventGuest);
+                            eventList = new ArrayList<>();
+                            eventList.add(events);
+                            eventAdapter = new EventAdapter(this, eventList, this);
+                            eventsView.setAdapter(eventAdapter);
+                        }
                     }else {
                         Toast.makeText(this, "You don't have any events posted. post an event in home Tab", Toast.LENGTH_LONG).show();
                     }

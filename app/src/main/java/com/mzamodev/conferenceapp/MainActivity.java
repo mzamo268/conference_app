@@ -178,6 +178,12 @@ public class MainActivity extends AppCompatActivity {
                 if(newStudentNo.equalsIgnoreCase(examNumber) && password.equalsIgnoreCase(pass)){
                     dbHelper.clearUserLogin();
                     dbHelper.updateDataLogin(newStudentNo,password,newName,newCell,newType);
+                    //fName,studentNo,cellphone,newPassword;
+                    fName = newName;
+                    studentNo = newStudentNo;
+                    cellphone = newCell;
+                    type = newType;
+                    password = newPassword;
                     found = true;
                 }else {
                     found = false;
