@@ -322,8 +322,6 @@ public class Home extends AppCompatActivity implements EventsInterface{
 
     //show events
     void showEvents(){
-
-
         //chatLayout.removeAllViews();
         DBHelper dbHelper = new DBHelper(Home.this);
         Cursor res = dbHelper.getAllEvents();
@@ -355,7 +353,8 @@ public class Home extends AppCompatActivity implements EventsInterface{
                             Toast.makeText(this, "showing events you created", Toast.LENGTH_LONG).show();
                         }
                     }
-                }else {
+                }
+                if(type.equalsIgnoreCase("user")){
                     eventsView = (RecyclerView) findViewById(R.id.eventsView);
                     eventsView.setHasFixedSize(true);
                     eventsView.setLayoutManager(new GridLayoutManager(this,1));
@@ -364,6 +363,7 @@ public class Home extends AppCompatActivity implements EventsInterface{
                     eventList.add(events);
                     eventAdapter = new EventAdapter(this,eventList,this);
                     eventsView.setAdapter(eventAdapter);
+                    Toast.makeText(this, "showing events", Toast.LENGTH_LONG).show();
                 }
 
             }
