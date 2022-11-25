@@ -105,32 +105,30 @@
 
                 <TextView
                     android:id="@+id/txtEventName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:text="Siyanda Mchunu"
+                    android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="23sp"
-                    android:textStyle="bold"
-                    android:textAlignment="center"
-                    android:text="Mzamo H Mbhele"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txtEventDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="Siyanda"
+                    android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:textAlignment="center"
-                    android:text="mzamo@mzamodev.com"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txtEventGuests"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textSize="18sp"
+                    android:text="phone(+27)"
                     android:textAlignment="center"
-                    android:text="0788563580"/>
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/txtPrice"
